@@ -1,0 +1,95 @@
+
+@extends('frontend.master')
+@section('body')
+<div class="container">
+<div class="row">
+	<div class="col-md-12 well">
+		<h3>you have to log in to complete your valuable order.if you not register then complete your register form</h3>
+	</div>
+	
+	
+	
+	<div class="col-md-5 well">
+    <h1>Registered If you are not registered Before!!!!</h1>
+		{{ Form::open(['route'=>'customer-sign-up','method'=>'post']) }}
+ <div class="form-group">
+ 	<input type="text" name="first_name" class="form-control" placeholder="Enter Your First Name">
+ </div>
+ <div class="form-group">
+ 	<input type="text" name="last_name" class="form-control" placeholder="Enter Your Last Name">
+ </div>
+ <div class="form-group">
+	 <input type="email" name="email_address" class="form-control" id="email_address" placeholder="Enter Your Email">
+	 <span class="text-success" id="res"></span>
+ </div>
+ <div class="form-group">
+ 	<input type="password" name="password" class="form-control" placeholder="Passsword">
+ </div>
+ <div class="form-group">
+ 	<textarea name="address" class="form-control" placeholder="address"></textarea>
+ 	
+ </div>
+ <div class="form-group">
+ 	<input type="text" name="phone_number" class="form-control" placeholder="Enter Your Phone Number">
+ </div>
+
+ <div class="form-group">
+ 	<input type="submit" name="btn" class="btn btn-info" id="regbtn" value="Register">
+ </div>
+
+
+		{{ Form::close() }}
+
+	</div>
+
+	<div class="col-md-5 well" style="margin-left: 20px">
+
+		<h1>Already Register???Login</h1>
+		{{ Form::open(['route'=>'customer-login','method'=>'post']) }}
+
+	<div class="form-group">
+		<div class="bg-warning text-danger">{{Session::get('message')}}</div>
+ 	<input type="email" name="email_address" class="form-control" placeholder="Example@gmail.com">
+       </div>
+    <div class="form-group">
+ 	<input type="password" name="password" class="form-control" placeholder="12345">
+    </div>
+
+    <div class="form-group">
+ 	<input type="submit" name="btn" class="btn btn-info" value="Login">
+ </div>
+
+	  {{ Form::close() }}
+
+	</div>
+</div>
+
+</div>
+
+
+<script>
+var Email=document.getElementById("email_address");
+Email.onblur=function(){
+	var emailAddress=document.getElementById("email_address").value;
+	var xmlHttp=new XMLHttpRequest();
+	var serverPage='http://localhost/laravel55/public/ajax-email/'+emailAddress;
+	xmlHttp.open("GET",serverPage);
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4 && xmlHttp.status==200)
+		{
+			document.getElementById('res').innerHTML=xmlHttp.responseText;
+			if(xmlHttp.responseText== 'already exits')
+			{
+           document.getElementById('regbtn').disabled=true; 
+			}
+			else
+			{
+				document.getElementById('regbtn').disabled=false; 
+			}
+		}
+
+	}
+	xmlHttp.send(null);
+}
+</script>
+@endsection
